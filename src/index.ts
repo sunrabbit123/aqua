@@ -11,7 +11,11 @@ export {
   Options,
   Head,
   getControllerMetadata,
-  getRouteMetadata
+  getRouteMetadata,
+  Interceptors,
+  getClassInterceptors,
+  getMethodInterceptors,
+  getAllInterceptors
 } from './decorators';
 
 export {
@@ -23,7 +27,11 @@ export {
   MiddlewareFunction,
   ServerOptions,
   ServiceFunction,
-  DomainFunction
+  DomainFunction,
+  InterceptorFunction,
+  InterceptorContext,
+  InterceptorResult,
+  InterceptorMetadata
 } from './types';
 
 export {

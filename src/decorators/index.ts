@@ -17,7 +17,7 @@ export function Controller(prefix?: string): ClassDecorator {
 
 function createMethodDecorator(method: string) {
   return function(path: string, middleware?: MiddlewareFunction[]) {
-    return function(target: any, propertyKey: string, _descriptor: PropertyDescriptor) {
+    return function(target: any, propertyKey: string, _descriptor?: PropertyDescriptor) {
       const existingRoutes = Reflect.getMetadata(ROUTES_KEY, target) || [];
       const route: RouteMetadata = {
         method: method.toUpperCase(),
@@ -46,3 +46,5 @@ export function getControllerMetadata(target: any): ControllerMetadata | undefin
 export function getRouteMetadata(target: any): RouteMetadata[] {
   return Reflect.getMetadata(ROUTES_KEY, target) || [];
 }
+
+export * from './interceptor';

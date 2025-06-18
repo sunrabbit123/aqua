@@ -1,13 +1,14 @@
 import * as http from 'http';
 import * as url from 'url';
-import { Request, Response, ServerOptions, MiddlewareFunction } from '../types';
+import { Request, Response, ServerOptions, MiddlewareFunction, InterceptorFunction, InterceptorContext } from '../types';
 import { Router } from './router';
-import { getControllerMetadata, getRouteMetadata } from '../decorators';
+import { getControllerMetadata, getRouteMetadata, getAllInterceptors } from '../decorators';
 
 export class AquaServer {
   private server: http.Server;
   private router: Router;
   private options: ServerOptions;
+  private globalInterceptors: InterceptorFunction[] = [];
 
   constructor(options: ServerOptions = {}) {
     this.options = {
@@ -43,10 +44,16 @@ export class AquaServer {
         throw new Error(`Handler ${route.handler} not found in controller ${controllerClass.name}`);
       }
 
+      const wrappedHandler = this.createInterceptorHandler(
+        handler.bind(controllerClass),
+        controllerClass,
+        route.handler
+      );
+
       this.router.addRoute(
         route.method,
         fullPath,
-        handler.bind(controllerClass),
+        wrappedHandler,
         route.middleware || []
       );
     });
@@ -54,6 +61,50 @@ export class AquaServer {
 
   use(middleware: MiddlewareFunction): void {
     this.router.use(middleware);
+  }
+
+  useInterceptor(interceptor: InterceptorFunction): void {
+    this.globalInterceptors.push(interceptor);
+  }
+
+  private createInterceptorHandler(
+    originalHandler: Function,
+    controllerClass: any,
+    methodName: string
+  ) {
+    return async (request: Request, response: Response) => {
+      const controllerInterceptors = getAllInterceptors(controllerClass, methodName);
+      const allInterceptors = [...this.globalInterceptors, ...controllerInterceptors];
+      
+      if (allInterceptors.length === 0) {
+        return await originalHandler(request, response);
+      }
+
+      return await this.executeInterceptors(
+        allInterceptors,
+        {
+          request,
+          response,
+          handler: originalHandler,
+          args: [request, response]
+        }
+      );
+    };
+  }
+
+  private async executeInterceptors(
+    interceptors: InterceptorFunction[],
+    context: InterceptorContext
+  ): Promise<any> {
+    for (const interceptor of interceptors) {
+      const result = await interceptor(context);
+      
+      if (!result.proceed) {
+        return result.data;
+      }
+    }
+
+    return await context.handler(...context.args);
   }
 
   private async handleRequest(req: http.IncomingMessage, res: http.ServerResponse): Promise<void> {

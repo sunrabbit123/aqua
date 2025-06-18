@@ -39,3 +39,5 @@ export interface ServerOptions {
 
 export type ServiceFunction<T extends any[] = any[], R = any> = (...args: T) => R | Promise<R>;
 export type DomainFunction<T extends any[] = any[], R = any> = (...args: T) => R | Promise<R>;
+
+export * from './interceptor';

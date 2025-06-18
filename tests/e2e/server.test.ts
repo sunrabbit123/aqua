@@ -119,6 +119,36 @@ async function runE2ETests() {
     assertEqual(response.statusCode, 404, 'Should return 404 for unhandled method');
   });
 
+  // Interceptor tests
+  runner.test('GET /auth/profile - Auth interceptor blocks unauthorized', async () => {
+    const response = await client.get('/auth/profile');
+    
+    assertEqual(response.statusCode, 401, 'Should return 401 for unauthorized request');
+    
+    const data = response.json();
+    assert(data.error === 'Unauthorized', 'Should return unauthorized error');
+  });
+
+  runner.test('GET /auth/profile - Auth interceptor allows authorized', async () => {
+    const response = await client.get('/auth/profile', {
+      'authorization': 'Bearer valid-token'
+    });
+    
+    assertEqual(response.statusCode, 200, 'Should return 200 for authorized request');
+    
+    const data = response.json();
+    assert(data.user.name === 'Authorized User', 'Should return user data');
+  });
+
+  runner.test('GET /auth/public - Public route bypasses auth', async () => {
+    const response = await client.get('/auth/public');
+    
+    assertEqual(response.statusCode, 200, 'Should return 200 for public route');
+    
+    const data = response.json();
+    assert(data.message === 'This is public', 'Should return public message');
+  });
+
   // Run all tests
   const results = await runner.run();
   
