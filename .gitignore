@@ -1,2 +1,8 @@
 node_modules
 dist
+
+# Example build artifacts
+example/**/*.js
+example/**/*.d.ts
+example/**/*.js.map
+example/**/*.d.ts.map
