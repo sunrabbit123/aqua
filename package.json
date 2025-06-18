@@ -1,0 +1,40 @@
+{
+  "name": "aqua-framework",
+  "version": "1.0.0",
+  "description": "TypeScript API server framework with decorator-based static controllers and functional service/domain layers",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "ts-node-dev example/app.ts",
+    "start": "node dist/index.js",
+    "test": "vitest",
+    "test:unit": "vitest run --reporter=verbose",
+    "test:e2e": "ts-node --project tsconfig.json tests/e2e/server.test.ts",
+    "test:all": "pnpm run test:unit && pnpm run test:e2e",
+    "lint": "oxlint src/ tests/",
+    "lint:fix": "oxlint --fix src/ tests/",
+    "clean": "rimraf dist"
+  },
+  "keywords": [
+    "typescript",
+    "api",
+    "framework",
+    "decorators",
+    "functional"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "reflect-metadata": "^0.1.13"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "oxlint": "^0.15.0",
+    "rimraf": "^5.0.0",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.0.0",
+    "vitest": "^1.0.0"
+  }
+}
