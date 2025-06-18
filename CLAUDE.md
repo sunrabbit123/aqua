@@ -68,6 +68,8 @@ tests/
 - `pnpm test:all`: 모든 테스트 실행
 - `pnpm lint`: oxlint 코드 검사
 - `pnpm lint:fix`: oxlint 자동 수정
+- `pnpm example:build`: 예제 앱 빌드 (example/build/ 디렉토리에 출력)
+- `pnpm example:run`: 예제 앱 빌드 후 실행
 
 ### 개발 우선순위
 1. **타입 안정성**: 모든 코드는 타입 체크 통과 필수
@@ -82,6 +84,42 @@ tests/
 - **보안 스캔**: CodeQL을 통한 자동 보안 분석
 - **의존성 관리**: Dependabot 자동 업데이트
 - **릴리스 자동화**: 태그 기반 자동 릴리스
+
+### Git 커밋 규칙
+**중요**: 모든 커밋 메시지는 **Conventional Commits** 형식을 준수해야 합니다.
+
+#### 커밋 메시지 형식
+```
+<type>(<scope>): <description>
+```
+
+- `<type>`: 변경 유형 (필수)
+- `<scope>`: 변경 범위/워크스페이스 (선택사항)
+- `<description>`: 변경 내용 설명 (필수)
+
+#### 지원하는 타입 (changelogithub 연동)
+- `feat`: 🚀 Features - 새로운 기능 추가
+- `fix`: 🐞 Bug Fixes - 버그 수정
+- `perf`: 🏎 Performance - 성능 개선
+- `docs`: 📝 Documentation - 문서 변경
+- `test`: ✅ Tests - 테스트 추가/수정
+- `ci`: 🤖 CI - CI/CD 변경
+- `style`: 🎨 Styles - 코드 스타일 변경
+- `build`: 📦 Build - 빌드 시스템/의존성 변경
+- `refactor`: 🔨 Code Refactoring - 기능 변경 없는 코드 리팩토링
+
+#### 예시
+- `feat: add interceptor system with decorator support`
+- `feat(core): add server configuration options`
+- `fix(example): prevent scattered build artifacts in example directory`
+- `docs(api): update API documentation for controllers`
+- `test(utils): add unit tests for functional utilities`
+- `ci(github): update Node.js version to 24 in workflows`
+
+### PR 및 머지 정책
+- **Squash Merge Only**: 모든 PR은 squash merge로 병합
+- **PR 제목 = 최종 커밋 메시지**: PR 제목이 conventional commit 형식이어야 함
+- **Changelog 자동 생성**: changelogithub이 PR 제목을 기반으로 changelog 생성
 
 ### 미래 확장 계획
 - 추가 HTTP 메서드 지원

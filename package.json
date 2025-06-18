@@ -14,7 +14,9 @@
     "test:all": "pnpm run test:unit && pnpm run test:e2e",
     "lint": "oxlint src/ tests/",
     "lint:fix": "oxlint --fix src/ tests/",
-    "clean": "rimraf dist"
+    "clean": "rimraf dist",
+    "example:build": "tsc --project example/tsconfig.json",
+    "example:run": "pnpm example:build && node example/build/example/app.js"
   },
   "keywords": [
     "typescript",
@@ -36,5 +38,36 @@
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.0.0",
     "vitest": "^1.0.0"
+  },
+  "changelogithub": {
+    "types": {
+      "feat": {
+        "title": "🚀 Features"
+      },
+      "fix": {
+        "title": "🐞 Bug Fixes"
+      },
+      "perf": {
+        "title": "🏎 Performance"
+      },
+      "docs": {
+        "title": "📝 Documentation"
+      },
+      "test": {
+        "title": "✅ Tests"
+      },
+      "ci": {
+        "title": "🤖 CI"
+      },
+      "style": {
+        "title": "🎨 Styles"
+      },
+      "build": {
+        "title": "📦 Build"
+      },
+      "refactor": {
+        "title": "🔨 Code Refactoring"
+      }
+    }
   }
 }
