@@ -20,18 +20,18 @@ pnpm install aqua-framework
 ## Quick Start
 
 ```typescript
-import { createApp, Controller, Get, Post, createService, createDomain } from 'aqua-framework';
+import { createApp, Controller, Get, Post } from 'aqua-framework';
 
 // Domain functions
-const validateUser = createDomain((userData: any) => {
+const validateUser = (userData: any) => {
   if (!userData.name) throw new Error('Name required');
   return userData;
-});
+};
 
 // Service functions
 const userService = {
-  getAll: createService(() => [{ id: 1, name: 'John' }]),
-  create: createService((data: any) => validateUser(data))
+  getAll: () => [{ id: 1, name: 'John' }],
+  create: (data: any) => validateUser(data)
 };
 
 // Controller with static methods
@@ -91,8 +91,6 @@ pnpm test:all
 
 ## Functional Utilities
 
-- `createService()` - Service function wrapper
-- `createDomain()` - Domain function wrapper
 - `compose()` - Function composition
 - `pipe()` - Pipeline operations
 - `curry()` - Function currying
