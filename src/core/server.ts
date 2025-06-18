@@ -26,7 +26,7 @@ export class AquaServer {
     }
   }
 
-  registerController(controllerClass: any): void {
+  registerController(controllerClass: Function): void {
     const controllerMetadata = getControllerMetadata(controllerClass);
     const routes = getRouteMetadata(controllerClass);
     
@@ -39,7 +39,7 @@ export class AquaServer {
         ? `${controllerMetadata.prefix}${route.path}`
         : route.path;
       
-      const handler = controllerClass[route.handler];
+      const handler = (controllerClass as unknown as Record<string, unknown>)[route.handler];
       if (!handler || typeof handler !== 'function') {
         throw new Error(`Handler ${route.handler} not found in controller ${controllerClass.name}`);
       }
@@ -69,7 +69,7 @@ export class AquaServer {
 
   private createInterceptorHandler(
     originalHandler: Function,
-    controllerClass: any,
+    controllerClass: Function,
     methodName: string
   ) {
     return async (request: Request, response: Response) => {
@@ -95,7 +95,7 @@ export class AquaServer {
   private async executeInterceptors(
     interceptors: InterceptorFunction[],
     context: InterceptorContext
-  ): Promise<any> {
+  ): Promise<unknown> {
     for (const interceptor of interceptors) {
       const result = await interceptor(context);
       
@@ -114,7 +114,7 @@ export class AquaServer {
       method: req.method || 'GET',
       url: req.url || '',
       path: parsedUrl.pathname || '/',
-      query: parsedUrl.query as Record<string, any>,
+      query: parsedUrl.query as Record<string, string | string[]>,
       params: {},
       body: await this.parseBody(req),
       headers: req.headers as Record<string, string>
@@ -168,7 +168,7 @@ export class AquaServer {
     await executeNext();
   }
 
-  private async parseBody(req: http.IncomingMessage): Promise<any> {
+  private async parseBody(req: http.IncomingMessage): Promise<unknown> {
     return new Promise((resolve) => {
       let body = '';
       req.on('data', chunk => {
@@ -190,12 +190,12 @@ export class AquaServer {
         res.statusCode = code;
         return this.createResponse(res);
       },
-      json: (data: any) => {
+      json: (data: unknown) => {
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(data));
         return this.createResponse(res);
       },
-      send: (data: any) => {
+      send: (data: unknown) => {
         res.end(data);
         return this.createResponse(res);
       },

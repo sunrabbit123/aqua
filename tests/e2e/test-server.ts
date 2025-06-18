@@ -6,7 +6,6 @@ import {
   Post, 
   Request, 
   Response, 
-  createService, 
   Interceptors,
   InterceptorFunction 
 } from '../../src/index';
@@ -39,22 +38,22 @@ const timingInterceptor: InterceptorFunction = async (context) => {
 
 // Test service
 const testService = {
-  getUsers: createService(() => [
+  getUsers: () => [
     { id: 1, name: 'John', email: 'john@example.com' },
     { id: 2, name: 'Jane', email: 'jane@example.com' }
-  ]),
+  ],
   
-  createUser: createService((userData: any) => ({
+  createUser: (userData: { name: string; email: string }) => ({
     id: Date.now(),
     ...userData,
     createdAt: new Date().toISOString()
-  })),
+  }),
 
-  getUserById: createService((id: string) => ({
+  getUserById: (id: string) => ({
     id: parseInt(id),
     name: `User ${id}`,
     email: `user${id}@example.com`
-  }))
+  })
 };
 
 // Test controller with class-level interceptor
@@ -74,12 +73,13 @@ class TestController {
 
   @Post('/users')
   static async createUser(req: Request, res: Response) {
-    if (!req.body.name || !req.body.email) {
+    const body = req.body as { name?: string; email?: string };
+    if (!body.name || !body.email) {
       res.status(400);
       return { error: 'Name and email are required' };
     }
     
-    const user = testService.createUser(req.body);
+    const user = testService.createUser({ name: body.name, email: body.email });
     res.status(201);
     return { user };
   }

@@ -4,12 +4,12 @@ export interface InterceptorContext {
   request: Request;
   response: Response;
   handler: Function;
-  args: any[];
+  args: unknown[];
 }
 
 export interface InterceptorResult {
   proceed: boolean;
-  data?: any;
+  data?: unknown;
 }
 
 export type InterceptorFunction = (

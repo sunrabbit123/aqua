@@ -29,7 +29,7 @@ export class Router {
     return path.replace(/\/+$/, '');
   }
 
-  match(method: string, path: string): { route: Route; params: Record<string, any> } | null {
+  match(method: string, path: string): { route: Route; params: Record<string, string> } | null {
     const normalizedPath = this.normalizePath(path);
     
     for (const route of this.routes) {
@@ -44,7 +44,7 @@ export class Router {
     return null;
   }
 
-  private matchPath(pattern: string, path: string): Record<string, any> | null {
+  private matchPath(pattern: string, path: string): Record<string, string> | null {
     const patternParts = pattern.split('/');
     const pathParts = path.split('/');
     
@@ -52,7 +52,7 @@ export class Router {
       return null;
     }
     
-    const params: Record<string, any> = {};
+    const params: Record<string, string> = {};
     
     for (let i = 0; i < patternParts.length; i++) {
       const patternPart = patternParts[i];
