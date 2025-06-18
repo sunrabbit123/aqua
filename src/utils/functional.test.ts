@@ -1,34 +1,7 @@
 import { describe, it, expect } from 'vitest';
-import { createService, createDomain, compose, pipe, curry, memoize } from './functional';
+import { compose, pipe, curry, memoize } from './functional';
 
 describe('Functional Utils', () => {
-  describe('createService', () => {
-    it('should wrap service function', () => {
-      const service = createService((x: number) => x * 2);
-      expect(service(5)).toBe(10);
-    });
-
-    it('should handle async service functions', async () => {
-      const asyncService = createService(async (x: number) => {
-        return Promise.resolve(x * 2);
-      });
-      const result = await asyncService(5);
-      expect(result).toBe(10);
-    });
-  });
-
-  describe('createDomain', () => {
-    it('should wrap domain function', () => {
-      const domain = createDomain((user: { name: string }) => {
-        if (!user.name) throw new Error('Name required');
-        return user;
-      });
-
-      expect(() => domain({ name: '' })).toThrow('Name required');
-      expect(domain({ name: 'John' })).toEqual({ name: 'John' });
-    });
-  });
-
   describe('compose', () => {
     it('should compose functions right to left', () => {
       const add1 = (x: number) => x + 1;

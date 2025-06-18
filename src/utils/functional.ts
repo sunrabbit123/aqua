@@ -1,13 +1,3 @@
-import { ServiceFunction, DomainFunction } from '../types';
-
-export function createService<T extends any[], R>(fn: ServiceFunction<T, R>): ServiceFunction<T, R> {
-  return fn;
-}
-
-export function createDomain<T extends any[], R>(fn: DomainFunction<T, R>): DomainFunction<T, R> {
-  return fn;
-}
-
 export function compose<T>(...fns: Array<(arg: T) => T>): (arg: T) => T {
   return (arg: T) => fns.reduceRight((result, fn) => fn(result), arg);
 }

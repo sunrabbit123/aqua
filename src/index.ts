@@ -35,8 +35,6 @@ export {
 } from './types';
 
 export {
-  createService,
-  createDomain,
   compose,
   pipe,
   asyncPipe,
