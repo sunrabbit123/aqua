@@ -1,34 +1,34 @@
-import { createApp, Controller, Get, Post, Request, Response, createService, createDomain } from '../src';
+import { createApp, Controller, Get, Post, Request, Response } from '../src';
 
 // Domain layer - pure functions
-const validateUser = createDomain((userData: any) => {
+const validateUser = (userData: any) => {
   if (!userData.name || !userData.email) {
     throw new Error('Name and email are required');
   }
   return userData;
-});
+};
 
-const createUserEntity = createDomain((userData: any) => ({
+const createUserEntity = (userData: any) => ({
   id: Date.now(),
   name: userData.name,
   email: userData.email,
   createdAt: new Date()
-}));
+});
 
 // Service layer - business logic functions
 const userService = {
-  getAll: createService(() => {
+  getAll: () => {
     return [
       { id: 1, name: 'John', email: 'john@example.com' },
       { id: 2, name: 'Jane', email: 'jane@example.com' }
     ];
-  }),
+  },
 
-  create: createService((userData: any) => {
+  create: (userData: any) => {
     const validatedData = validateUser(userData);
     const user = createUserEntity(validatedData);
     return user;
-  })
+  }
 };
 
 // Controller with static methods and decorators
