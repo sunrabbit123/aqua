@@ -5,7 +5,7 @@ const CONTROLLER_KEY = Symbol('controller');
 const ROUTES_KEY = Symbol('routes');
 
 export function Controller(prefix?: string): ClassDecorator {
-  return function(target: any) {
+  return function(target: Function) {
     const existingRoutes = Reflect.getMetadata(ROUTES_KEY, target) || [];
     const controllerMetadata: ControllerMetadata = {
       prefix,
@@ -17,7 +17,7 @@ export function Controller(prefix?: string): ClassDecorator {
 
 function createMethodDecorator(method: string) {
   return function(path: string, middleware?: MiddlewareFunction[]) {
-    return function(target: any, propertyKey: string, _descriptor?: PropertyDescriptor) {
+    return function(target: object, propertyKey: string, _descriptor?: PropertyDescriptor) {
       const existingRoutes = Reflect.getMetadata(ROUTES_KEY, target) || [];
       const route: RouteMetadata = {
         method: method.toUpperCase(),
@@ -39,11 +39,11 @@ export const Patch = createMethodDecorator('patch');
 export const Options = createMethodDecorator('options');
 export const Head = createMethodDecorator('head');
 
-export function getControllerMetadata(target: any): ControllerMetadata | undefined {
+export function getControllerMetadata(target: Function): ControllerMetadata | undefined {
   return Reflect.getMetadata(CONTROLLER_KEY, target);
 }
 
-export function getRouteMetadata(target: any): RouteMetadata[] {
+export function getRouteMetadata(target: Function): RouteMetadata[] {
   return Reflect.getMetadata(ROUTES_KEY, target) || [];
 }
 

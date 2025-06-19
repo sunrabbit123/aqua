@@ -25,7 +25,7 @@ const authInterceptor: InterceptorFunction = async (context) => {
   return { proceed: true };
 };
 
-const timingInterceptor: InterceptorFunction = async (context) => {
+const timingInterceptor: InterceptorFunction = async (_context) => {
   const start = Date.now();
   const result = { proceed: true };
   
@@ -43,7 +43,7 @@ const testService = {
     { id: 2, name: 'Jane', email: 'jane@example.com' }
   ],
   
-  createUser: (userData: any) => ({
+  createUser: (userData: { name: string; email: string }) => ({
     id: Date.now(),
     ...userData,
     createdAt: new Date().toISOString()
@@ -73,12 +73,13 @@ class TestController {
 
   @Post('/users')
   static async createUser(req: Request, res: Response) {
-    if (!req.body.name || !req.body.email) {
+    const body = req.body as { name?: string; email?: string };
+    if (!body.name || !body.email) {
       res.status(400);
       return { error: 'Name and email are required' };
     }
     
-    const user = testService.createUser(req.body);
+    const user = testService.createUser({ name: body.name, email: body.email });
     res.status(201);
     return { user };
   }

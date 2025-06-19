@@ -2,20 +2,20 @@ export interface Request {
   method: string;
   url: string;
   path: string;
-  query: Record<string, any>;
-  params: Record<string, any>;
-  body: any;
+  query: Record<string, string | string[]>;
+  params: Record<string, string>;
+  body: unknown;
   headers: Record<string, string>;
 }
 
 export interface Response {
   status(code: number): Response;
-  json(data: any): Response;
-  send(data: any): Response;
+  json(data: unknown): Response;
+  send(data: unknown): Response;
   header(key: string, value: string): Response;
 }
 
-export type RouteHandler = (req: Request, res: Response) => any;
+export type RouteHandler = (req: Request, res: Response) => unknown | Promise<unknown>;
 
 export interface RouteMetadata {
   method: string;
@@ -37,7 +37,7 @@ export interface ServerOptions {
   middleware?: MiddlewareFunction[];
 }
 
-export type ServiceFunction<T extends any[] = any[], R = any> = (...args: T) => R | Promise<R>;
-export type DomainFunction<T extends any[] = any[], R = any> = (...args: T) => R | Promise<R>;
+export type ServiceFunction<T extends unknown[] = unknown[], R = unknown> = (...args: T) => R | Promise<R>;
+export type DomainFunction<T extends unknown[] = unknown[], R = unknown> = (...args: T) => R | Promise<R>;
 
 export * from './interceptor';

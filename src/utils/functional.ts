@@ -2,13 +2,13 @@ export function compose<T>(...fns: Array<(arg: T) => T>): (arg: T) => T {
   return (arg: T) => fns.reduceRight((result, fn) => fn(result), arg);
 }
 
-export function pipe<T, R>(...fns: Array<(arg: any) => any>): (arg: T) => R {
-  return (arg: T) => fns.reduce((result, fn) => fn(result), arg) as unknown as R;
+export function pipe<T, R>(...fns: Array<(arg: unknown) => unknown>): (arg: T) => R {
+  return (arg: T) => fns.reduce((result, fn) => fn(result), arg as unknown) as unknown as R;
 }
 
-export async function asyncPipe<T, R>(...fns: Array<(arg: any) => any | Promise<any>>): Promise<(arg: T) => Promise<R>> {
+export async function asyncPipe<T, R>(...fns: Array<(arg: unknown) => unknown | Promise<unknown>>): Promise<(arg: T) => Promise<R>> {
   return async (arg: T) => {
-    let result = arg;
+    let result: unknown = arg;
     for (const fn of fns) {
       result = await fn(result);
     }
@@ -16,16 +16,16 @@ export async function asyncPipe<T, R>(...fns: Array<(arg: any) => any | Promise<
   };
 }
 
-export function curry<T extends any[], R>(fn: (...args: T) => R): any {
-  return function curried(...args: any[]): any {
+export function curry<T extends unknown[], R>(fn: (...args: T) => R): (...args: unknown[]) => unknown {
+  return function curried(...args: unknown[]): unknown {
     if (args.length >= fn.length) {
       return fn(...args as T);
     }
-    return (...nextArgs: any[]) => curried(...args, ...nextArgs);
+    return (...nextArgs: unknown[]) => curried(...args, ...nextArgs);
   };
 }
 
-export function memoize<T extends any[], R>(fn: (...args: T) => R): (...args: T) => R {
+export function memoize<T extends unknown[], R>(fn: (...args: T) => R): (...args: T) => R {
   const cache = new Map();
   return (...args: T): R => {
     const key = JSON.stringify(args);
