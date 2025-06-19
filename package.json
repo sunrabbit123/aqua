@@ -5,13 +5,15 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc",
+    "build": "typia patch && tsc",
     "dev": "ts-node-dev example/app.ts",
     "start": "node dist/index.js",
     "test": "vitest",
     "test:unit": "vitest run --reporter=verbose",
     "test:e2e": "ts-node --project tsconfig.json tests/e2e/server.test.ts",
-    "test:all": "pnpm run test:unit && pnpm run test:e2e",
+    "test:e2e:validation": "ts-node --project tsconfig.json tests/e2e/validation.test.ts",
+    "test:e2e:typia": "tsc --project tests/tsconfig.test.json && node tests/build/typia-validation.test.js",
+    "test:all": "pnpm run test:unit && pnpm run test:e2e && pnpm run test:e2e:validation && pnpm run test:e2e:typia",
     "lint": "oxlint src/ tests/",
     "lint:fix": "oxlint --fix src/ tests/",
     "clean": "rimraf dist",
@@ -28,7 +30,8 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "reflect-metadata": "^0.1.13"
+    "reflect-metadata": "^0.1.13",
+    "typia": "^9.3.1"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
@@ -36,6 +39,7 @@
     "rimraf": "^5.0.0",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
+    "ts-patch": "^3.3.0",
     "typescript": "^5.0.0",
     "vitest": "^1.0.0"
   },

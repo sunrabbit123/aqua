@@ -17,7 +17,12 @@
     "declarationMap": true,
     "sourceMap": true,
     "removeComments": false,
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "plugins": [
+      {
+        "transform": "typia/lib/transform"
+      }
+    ]
   },
   "include": [
     "src/**/*"

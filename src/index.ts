@@ -15,7 +15,17 @@ export {
   Interceptors,
   getClassInterceptors,
   getMethodInterceptors,
-  getAllInterceptors
+  getAllInterceptors,
+  Body,
+  Param,
+  Query,
+  getMethodValidationMetadata,
+  clearValidationMetadata,
+  TypiaBody,
+  TypiaParam,
+  TypiaQuery,
+  getTypiaMethodValidationMetadata,
+  clearTypiaValidationMetadata
 } from './decorators';
 
 export {
@@ -31,7 +41,18 @@ export {
   InterceptorFunction,
   InterceptorContext,
   InterceptorResult,
-  InterceptorMetadata
+  InterceptorMetadata,
+  ValidationError,
+  ValidationResult,
+  ValidatorFunction,
+  ParameterValidationMetadata,
+  ValidationMetadata,
+  TypiaValidationError,
+  TypiaValidationResult,
+  TypiaValidator,
+  TypiaParameterMetadata,
+  createTypiaValidator,
+  createStringValidator
 } from './types';
 
 export {
@@ -41,6 +62,16 @@ export {
   curry,
   memoize
 } from './utils/functional';
+
+export {
+  stringValidator,
+  numberValidator,
+  booleanValidator,
+  objectValidator,
+  arrayValidator,
+  optionalValidator,
+  createTypeValidator
+} from './validators';
 
 import { AquaServer } from './core/server';
 import { ServerOptions } from './types';
