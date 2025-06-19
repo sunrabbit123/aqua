@@ -26,7 +26,11 @@ export class Router {
 
   private normalizePath(path: string): string {
     if (path === '/') return path;
-    return path.replace(/\/+$/, '');
+    // Remove trailing slashes safely to prevent ReDoS attacks
+    while (path.length > 1 && path.endsWith('/')) {
+      path = path.slice(0, -1);
+    }
+    return path;
   }
 
   match(method: string, path: string): { route: Route; params: Record<string, string> } | null {
