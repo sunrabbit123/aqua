@@ -3,7 +3,7 @@ import * as url from 'url';
 import { Request, Response, ServerOptions, MiddlewareFunction, InterceptorFunction, InterceptorContext } from '../types';
 import { Router } from './router';
 import { getControllerMetadata, getRouteMetadata, getAllInterceptors } from '../decorators';
-import { processRequestParameters, RequestValidationError, handleValidationError } from '../validators/request-processor';
+import { processRequestParameters, TypiaRequestValidationError, handleValidationError } from '../validators/typia-request-processor';
 
 export class AquaServer {
   private server: http.Server;
@@ -95,7 +95,7 @@ export class AquaServer {
           }
         );
       } catch (error) {
-        if (error instanceof RequestValidationError) {
+        if (error instanceof TypiaRequestValidationError) {
           handleValidationError(error, response);
           return;
         }

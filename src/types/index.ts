@@ -42,3 +42,12 @@ export type DomainFunction<T extends unknown[] = unknown[], R = unknown> = (...a
 
 export * from './interceptor';
 export * from './validation';
+export {
+  TypiaValidationError,
+  TypiaValidationResult,
+  TypiaValidator,
+  ParameterMetadata as TypiaParameterMetadata,
+  ValidationMetadata as TypiaValidationMetadata,
+  createTypiaValidator,
+  createStringValidator
+} from './typia-validation';

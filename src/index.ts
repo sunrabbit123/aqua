@@ -20,7 +20,12 @@ export {
   Param,
   Query,
   getMethodValidationMetadata,
-  clearValidationMetadata
+  clearValidationMetadata,
+  TypiaBody,
+  TypiaParam,
+  TypiaQuery,
+  getTypiaMethodValidationMetadata,
+  clearTypiaValidationMetadata
 } from './decorators';
 
 export {
@@ -41,7 +46,13 @@ export {
   ValidationResult,
   ValidatorFunction,
   ParameterValidationMetadata,
-  ValidationMetadata
+  ValidationMetadata,
+  TypiaValidationError,
+  TypiaValidationResult,
+  TypiaValidator,
+  TypiaParameterMetadata,
+  createTypiaValidator,
+  createStringValidator
 } from './types';
 
 export {
