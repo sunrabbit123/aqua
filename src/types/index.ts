@@ -41,3 +41,4 @@ export type ServiceFunction<T extends unknown[] = unknown[], R = unknown> = (...
 export type DomainFunction<T extends unknown[] = unknown[], R = unknown> = (...args: T) => R | Promise<R>;
 
 export * from './interceptor';
+export * from './validation';

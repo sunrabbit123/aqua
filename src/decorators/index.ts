@@ -48,3 +48,4 @@ export function getRouteMetadata(target: Function): RouteMetadata[] {
 }
 
 export * from './interceptor';
+export * from './validation';

@@ -3,6 +3,7 @@ import * as url from 'url';
 import { Request, Response, ServerOptions, MiddlewareFunction, InterceptorFunction, InterceptorContext } from '../types';
 import { Router } from './router';
 import { getControllerMetadata, getRouteMetadata, getAllInterceptors } from '../decorators';
+import { processRequestParameters, RequestValidationError, handleValidationError } from '../validators/request-processor';
 
 export class AquaServer {
   private server: http.Server;
@@ -73,22 +74,33 @@ export class AquaServer {
     methodName: string
   ) {
     return async (request: Request, response: Response) => {
-      const controllerInterceptors = getAllInterceptors(controllerClass, methodName);
-      const allInterceptors = [...this.globalInterceptors, ...controllerInterceptors];
-      
-      if (allInterceptors.length === 0) {
-        return await originalHandler(request, response);
-      }
-
-      return await this.executeInterceptors(
-        allInterceptors,
-        {
-          request,
-          response,
-          handler: originalHandler,
-          args: [request, response]
+      try {
+        // Process validation for request parameters
+        const args = processRequestParameters(controllerClass, methodName, request);
+        
+        const controllerInterceptors = getAllInterceptors(controllerClass, methodName);
+        const allInterceptors = [...this.globalInterceptors, ...controllerInterceptors];
+        
+        if (allInterceptors.length === 0) {
+          return await originalHandler(...args, response);
         }
-      );
+
+        return await this.executeInterceptors(
+          allInterceptors,
+          {
+            request,
+            response,
+            handler: originalHandler,
+            args: [...args, response]
+          }
+        );
+      } catch (error) {
+        if (error instanceof RequestValidationError) {
+          handleValidationError(error, response);
+          return;
+        }
+        throw error;
+      }
     };
   }
 
