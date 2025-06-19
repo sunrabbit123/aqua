@@ -25,7 +25,7 @@ const authInterceptor: InterceptorFunction = async (context) => {
   return { proceed: true };
 };
 
-const timingInterceptor: InterceptorFunction = async (context) => {
+const timingInterceptor: InterceptorFunction = async (_context) => {
   const start = Date.now();
   const result = { proceed: true };
   

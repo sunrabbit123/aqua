@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { InterceptorFunction, InterceptorMetadata } from '../types/interceptor';
+import { InterceptorFunction } from '../types/interceptor';
 
 const INTERCEPTOR_KEY = Symbol('interceptor');
 const METHOD_INTERCEPTOR_KEY = Symbol('methodInterceptor');
