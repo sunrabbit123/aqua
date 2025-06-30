@@ -31,7 +31,7 @@
     "reflect-metadata": "^0.1.13"
   },
   "devDependencies": {
-    "@types/node": "^20.0.0",
+    "@types/node": "^24.0.7",
     "oxlint": "^0.15.0",
     "rimraf": "^5.0.0",
     "ts-node": "^10.9.2",
