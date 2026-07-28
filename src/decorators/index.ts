@@ -48,3 +48,11 @@ export function getRouteMetadata(target: Function): RouteMetadata[] {
 }
 
 export * from './interceptor';
+export * from './validation';
+export {
+  Body as TypiaBody,
+  Param as TypiaParam,
+  Query as TypiaQuery,
+  getMethodValidationMetadata as getTypiaMethodValidationMetadata,
+  clearValidationMetadata as clearTypiaValidationMetadata
+} from './typia-validation';
